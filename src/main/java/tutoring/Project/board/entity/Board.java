@@ -1,4 +1,4 @@
-package tutoring.Project.domain;
+package tutoring.Project.board.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
-import net.bytebuddy.asm.Advice.Local;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 

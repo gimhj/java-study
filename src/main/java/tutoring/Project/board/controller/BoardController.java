@@ -1,4 +1,4 @@
-package tutoring.Project.controller;
+package tutoring.Project.board.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import tutoring.Project.domain.Board;
-import tutoring.Project.domain.BoardStatus;
-import tutoring.Project.domain.BoardType;
-import tutoring.Project.service.BoardService;
+import tutoring.Project.board.entity.Board;
+import tutoring.Project.board.entity.BoardStatus;
+import tutoring.Project.board.entity.BoardType;
+import tutoring.Project.board.service.BoardService;
 
 @RequiredArgsConstructor
 @RestController

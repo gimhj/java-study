@@ -1,4 +1,4 @@
-package tutoring.Project.exception;
+package tutoring.Project.board.exception;
 
 public class AlreadyExistException extends RuntimeException{
 

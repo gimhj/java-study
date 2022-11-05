@@ -11,18 +11,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import tutoring.Project.domain.Board;
-import tutoring.Project.domain.BoardStatus;
-import tutoring.Project.domain.BoardType;
-import tutoring.Project.exception.AlreadyExistException;
-import tutoring.Project.repository.BoardRepository;
+import tutoring.Project.board.entity.Board;
+import tutoring.Project.board.entity.BoardStatus;
+import tutoring.Project.board.entity.BoardType;
+import tutoring.Project.board.exception.AlreadyExistException;
+import tutoring.Project.board.repository.BoardRepository;
+import tutoring.Project.board.service.BoardService;
 
 @SpringBootTest
 @Transactional
 class BoardServiceTest {
 
     @Autowired EntityManager em;
-    @Autowired BoardService boardService;
+    @Autowired
+    BoardService boardService;
     @Autowired BoardRepository boardRepository;
 
     @Test

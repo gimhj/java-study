@@ -1,12 +1,12 @@
-package tutoring.Project.service;
+package tutoring.Project.board.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tutoring.Project.domain.Board;
-import tutoring.Project.exception.AlreadyExistException;
-import tutoring.Project.repository.BoardRepository;
+import tutoring.Project.board.exception.AlreadyExistException;
+import tutoring.Project.board.repository.BoardRepository;
+import tutoring.Project.board.entity.Board;
 
 @Service
 @Transactional(readOnly = true)

@@ -1,12 +1,10 @@
-package tutoring.Project.repository;
+package tutoring.Project.board.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import tutoring.Project.domain.Board;
-import tutoring.Project.domain.BoardStatus;
+import tutoring.Project.board.entity.Board;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class BoardRepository {
 
     public List<Board> findAll() {
         return em.createQuery(
-            "select b from Board b where b.status = tutoring.Project.domain.BoardStatus.OPEN",
+            "select b from Board b where b.status = tutoring.Project.board.entity.BoardStatus.OPEN",
                 Board.class)
             .getResultList();
     }
