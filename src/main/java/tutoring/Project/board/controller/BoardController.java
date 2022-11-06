@@ -6,14 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tutoring.Project.board.entity.Board;
 import tutoring.Project.board.entity.BoardStatus;
 import tutoring.Project.board.entity.BoardType;
 import tutoring.Project.board.service.BoardService;
 
-@RequiredArgsConstructor
 @RestController
+@RequestMapping("/boards")
+@RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
@@ -24,7 +26,7 @@ public class BoardController {
         return boardService.findAll();
     }
 
-    @PostMapping("/board")
+    @PostMapping("/")
     public void save(@RequestBody String title, String content, BoardType type, LocalDateTime publishAt) {
         Board board = new Board();
         board.setStatus(BoardStatus.CLOSE);
