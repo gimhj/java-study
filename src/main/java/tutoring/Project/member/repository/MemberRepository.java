@@ -1,6 +1,7 @@
 package tutoring.Project.member.repository;
 
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -25,9 +26,9 @@ public class MemberRepository {
             .getResultList();
     }
 
-    public List<Member> findByEmail(String email) {
+    public Member findByEmail(String email) {
         return em.createQuery("select m from Member m where m.email = :email", Member.class)
             .setParameter("email", email)
-            .getResultList();
+            .getSingleResult();
     }
 }
