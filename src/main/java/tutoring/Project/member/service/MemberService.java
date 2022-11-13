@@ -1,5 +1,7 @@
 package tutoring.Project.member.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,5 +39,17 @@ public class MemberService {
 
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    public List<Member> findAll() {
+
+        return memberRepository.findAll();
+    }
+
+    @Transactional
+    public void updateDeletedAt(Long memberId) {
+
+        Member member = memberRepository.findOne(memberId);
+        member.setDeletedAt(LocalDateTime.now());
     }
 }

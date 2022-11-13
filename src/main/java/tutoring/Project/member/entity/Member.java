@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +21,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @Getter @Setter
 @EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE member SET deleted_at = CURRENT_TIME WHERE id=?")
+@Where(clause = "deleted_at IS NULL")
 public class Member {
 
     @Id @GeneratedValue
