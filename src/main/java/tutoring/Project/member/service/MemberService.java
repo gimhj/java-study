@@ -34,4 +34,8 @@ public class MemberService {
             throw new AlreadyExistMemberException("이미 존재하는 회원입니다.");
         }
     }
+
+    public Member findOne(Long memberId) {
+        return memberRepository.findOne(memberId);
+    }
 }
