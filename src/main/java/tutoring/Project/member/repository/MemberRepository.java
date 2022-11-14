@@ -41,4 +41,11 @@ public class MemberRepository {
             .stream()
             .findFirst();
     }
+
+    public Member findByEmailForAuth(String email) {
+
+        return em.createQuery("select m from Member m where m.email = :email", Member.class)
+            .setParameter("email", email)
+            .getSingleResult();
+    }
 }
