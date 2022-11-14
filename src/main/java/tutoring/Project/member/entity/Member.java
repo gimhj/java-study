@@ -43,6 +43,8 @@ public class Member {
     @Embedded
     private Address address;
 
+    @LastModifiedDate
+    private LocalDateTime loginAt;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
