@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import tutoring.Project.auth.provider.CustomAuthenticationProvider;
 
 @Configuration
@@ -21,6 +22,7 @@ import tutoring.Project.auth.provider.CustomAuthenticationProvider;
 @Slf4j
 public class SecurityConfig {
     private final CustomAuthenticationProvider authProvider;
+    private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -54,6 +56,8 @@ public class SecurityConfig {
             .and()
             .formLogin()
             .loginProcessingUrl("/loginProc")
+            .defaultSuccessUrl("/")
+            .successHandler(customAuthenticationSuccessHandler)
             .usernameParameter("email")
             .permitAll();
 
