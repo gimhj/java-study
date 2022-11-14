@@ -59,7 +59,12 @@ public class SecurityConfig {
             .defaultSuccessUrl("/")
             .successHandler(customAuthenticationSuccessHandler)
             .usernameParameter("email")
-            .permitAll();
+            .permitAll()
+            .and()
+            .logout()
+            .logoutUrl("/members/logout")
+            .clearAuthentication(true)
+            .invalidateHttpSession(true);
 
         return http.build();
     }
