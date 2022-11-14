@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,28 +26,30 @@ import tutoring.Project.member.service.MemberService;
 public class MemberController {
 
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("")
     public List<Member> index() {
+
         return memberService.findAll();
     }
 
     @PostMapping("")
     @Operation(summary = "회원가입")
-    public Member store(
-        @Valid @RequestBody SignUpDTO signUpDTO
-    ) {
+    public Member store(@Valid @RequestBody SignUpDTO signUpDTO) {
 
         Address address = new Address(signUpDTO.getCity(), signUpDTO.getStreet(),
             signUpDTO.getZipcode());
+        String password = passwordEncoder.encode(signUpDTO.getPassword());
 
         Member member = new Member();
         member.setName(signUpDTO.getName());
         member.setNickname(signUpDTO.getNickname());
         member.setEmail(signUpDTO.getEmail());
-        member.setPassword(signUpDTO.getPassword());
+        member.setPassword(password);
         member.setPhone(signUpDTO.getPhone());
         member.setBirth(signUpDTO.getBirth());
+        member.setIsTest(false);
         member.setGrade(MemberGrade.BRONZE);
         member.setAddress(address);
 
@@ -57,9 +60,7 @@ public class MemberController {
 
     @GetMapping("/{memberId}")
     @Operation(summary = "회원 단일 조회")
-    public Member show(
-        @PathVariable("memberId") Long memberId
-    ) {
+    public Member show(@PathVariable("memberId") Long memberId) {
 
         return memberService.findOne(memberId);
     }
