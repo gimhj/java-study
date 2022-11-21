@@ -6,14 +6,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tutoring.Project.auth.common.SignInAuthenticationEntryPoint;
+import tutoring.Project.auth.filter.SingUpProcessingFilter;
+import tutoring.Project.auth.handler.CustomAuthenticationFailureHandler;
+import tutoring.Project.auth.handler.CustomAuthenticationSuccessHandler;
 import tutoring.Project.auth.provider.CustomAuthenticationProvider;
 
 @Configuration
@@ -21,16 +26,11 @@ import tutoring.Project.auth.provider.CustomAuthenticationProvider;
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
+    private final UserDetailsService userDetailsService;
+    private final CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler authenticationFailureHandler;
     private final CustomAuthenticationProvider authProvider;
-    private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
-
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-            http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.authenticationProvider(authProvider);
-        return authenticationManagerBuilder.build();
-    }
+    private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -48,25 +48,33 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        SingUpProcessingFilter singUpProcessingFilter = new SingUpProcessingFilter();
+        singUpProcessingFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        singUpProcessingFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        singUpProcessingFilter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+
         http
             .csrf().disable()
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/api/members").permitAll()
+            .antMatchers("/api/members/signIn").permitAll()
+            .antMatchers("/api/**").authenticated()
             .anyRequest().authenticated()
             .and()
-            .formLogin()
-            .loginProcessingUrl("/loginProc")
-            .defaultSuccessUrl("/")
-            .successHandler(customAuthenticationSuccessHandler)
-            .usernameParameter("email")
-            .permitAll()
-            .and()
-            .logout()
-            .logoutUrl("/members/logout")
-            .clearAuthentication(true)
-            .invalidateHttpSession(true);
+            .addFilterBefore(singUpProcessingFilter, UsernamePasswordAuthenticationFilter.class)
+            .authenticationProvider(authProvider)
+            .exceptionHandling()
+            .authenticationEntryPoint(new SignInAuthenticationEntryPoint());
 
         return http.build();
     }
+
+    public AuthenticationManager authenticationManager(
+        AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
 }
+
 

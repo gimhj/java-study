@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tutoring.Project.member.entity.Address;
 import tutoring.Project.member.entity.Member;
 import tutoring.Project.member.entity.MemberGrade;
+import tutoring.Project.member.entity.SignInDTO;
 import tutoring.Project.member.entity.SignUpDTO;
 import tutoring.Project.member.service.MemberService;
 
@@ -34,6 +37,7 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
 
     @GetMapping("")
+    @Operation(summary = "전체조회")
     public List<Member> index() {
 
         return memberService.findAll();
@@ -77,14 +81,23 @@ public class MemberController {
         memberService.updateDeletedAt(memberId);
     }
 
-    @GetMapping(value = "/logout")
+    @PostMapping(value = "/signIn")
+    @Operation(summary = "로그인")
+    public ResponseEntity<Object> signIn(@Valid @RequestBody SignInDTO signInDTO) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/signOut")
     @Operation(summary = "로그아웃")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    public int signOut(HttpServletRequest request, HttpServletResponse response) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
+
+        return HttpStatus.OK.value();
     }
 }

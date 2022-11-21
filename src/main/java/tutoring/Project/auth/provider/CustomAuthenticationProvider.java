@@ -5,15 +5,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import tutoring.Project.auth.exeption.DeletedMemberException;
 import tutoring.Project.auth.exeption.ExpiredMemberException;
 import tutoring.Project.auth.service.MemberContext;
+import tutoring.Project.auth.token.AuthenticationToken;
 
 @Component
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         String email = authentication.getName();
@@ -44,8 +46,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new ExpiredMemberException("휴면 계정입니다.");
         }
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(
+        AuthenticationToken authenticationToken =
+            new AuthenticationToken(
                 memberContext.getMember(),
                 null,
                 memberContext.getAuthorities());
@@ -55,6 +57,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return authentication.equals(AuthenticationToken.class);
     }
+
 }
