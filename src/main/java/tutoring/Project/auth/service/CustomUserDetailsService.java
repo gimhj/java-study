@@ -1,6 +1,7 @@
 package tutoring.Project.auth.service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +25,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findByEmailForAuth(email);
+        Optional<Member> member = memberRepository.findByEmail(email);
 
-        if (member == null) {
+        if (member.get() == null) {
             throw new UsernameNotFoundException("존재하지 않는 회원입니다.");
         }
 
-        MemberContext memberContext = new MemberContext(member, authorities);
+        MemberContext memberContext = new MemberContext(member.get(), authorities);
 
         return memberContext;
     }
