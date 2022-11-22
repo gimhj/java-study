@@ -76,9 +76,11 @@ public class MemberController {
 
     @PutMapping("/{memberId}/destroy")
     @Operation(summary = "회원 탈퇴")
-    public void destroy(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity<Object> destroy(@PathVariable("memberId") Long memberId) {
 
         memberService.updateDeletedAt(memberId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/signIn")
