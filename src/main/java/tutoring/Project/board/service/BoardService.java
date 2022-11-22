@@ -36,9 +36,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Board update(Long boardId, BoardDTO boardDTO) {
+    public Board update(Long boardId, Member member, BoardDTO boardDTO) {
 
         Board board = this.findOne(boardId);
+        board.setMember(member);
         board.setState(boardDTO.getState());
         board.setType(boardDTO.getType());
         board.setTitle(boardDTO.getTitle());

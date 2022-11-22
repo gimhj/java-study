@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tutoring.Project.board.entity.Board;
 import tutoring.Project.board.entity.BoardDTO;
 import tutoring.Project.board.service.BoardService;
+import tutoring.Project.member.entity.Member;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,8 +38,11 @@ public class BoardController {
     @PostMapping("")
     @Operation(summary = "게시글 생성")
     public Board store(@Valid @RequestBody BoardDTO boardDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
 
         Board board = new Board();
+        board.setMember(member);
         board.setState(boardDTO.getState());
         board.setType(boardDTO.getType());
         board.setTitle(boardDTO.getTitle());
@@ -51,8 +57,10 @@ public class BoardController {
     @PutMapping("/{boardId}")
     @Operation(summary = "게시글 수정")
     public Board update(@PathVariable("boardId") Long boardId, @Valid @RequestBody BoardDTO boardDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
 
-        Board board = boardService.update(boardId, boardDTO);
+        Board board = boardService.update(boardId, member, boardDTO);
 
         return board;
     }
