@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tutoring.Project.board.entity.Board;
-import tutoring.Project.board.entity.BoardDTO;
+import tutoring.Project.board.entity.BoardDto;
 import tutoring.Project.board.entity.BoardResponseDto;
 import tutoring.Project.board.service.BoardService;
 import tutoring.Project.member.entity.Member;
@@ -45,7 +45,7 @@ public class BoardController {
 
     @PostMapping("")
     @Operation(summary = "게시글 생성")
-    public BoardResponseDto store(@Valid @RequestBody BoardDTO boardDTO) {
+    public BoardResponseDto store(@Valid @RequestBody BoardDto boardDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
 
@@ -66,7 +66,7 @@ public class BoardController {
     @Operation(summary = "게시글 수정")
     public BoardResponseDto update(
         @PathVariable("boardId") Long boardId,
-        @Valid @RequestBody BoardDTO boardDTO
+        @Valid @RequestBody BoardDto boardDTO
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();

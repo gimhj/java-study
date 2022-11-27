@@ -26,8 +26,8 @@ import tutoring.Project.member.entity.Address;
 import tutoring.Project.member.entity.Member;
 import tutoring.Project.member.entity.MemberGrade;
 import tutoring.Project.member.entity.MemberResponseDto;
-import tutoring.Project.member.entity.SignInDTO;
-import tutoring.Project.member.entity.SignUpDTO;
+import tutoring.Project.member.entity.SignInDto;
+import tutoring.Project.member.entity.SignUpDto;
 import tutoring.Project.member.service.MemberService;
 
 @RestController
@@ -54,7 +54,7 @@ public class MemberController {
 
     @PostMapping("")
     @Operation(summary = "회원가입")
-    public MemberResponseDto store(@Valid @RequestBody SignUpDTO signUpDTO) {
+    public MemberResponseDto store(@Valid @RequestBody SignUpDto signUpDTO) {
 
         Address address = new Address(signUpDTO.getCity(), signUpDTO.getStreet(),
             signUpDTO.getZipcode()
@@ -96,7 +96,7 @@ public class MemberController {
 
     @PostMapping(value = "/signIn")
     @Operation(summary = "로그인")
-    public ResponseEntity<Object> signIn(@Valid @RequestBody SignInDTO signInDTO) {
+    public ResponseEntity<Object> signIn(@Valid @RequestBody SignInDto signInDTO) {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

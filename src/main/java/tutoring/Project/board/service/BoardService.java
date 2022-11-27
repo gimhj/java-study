@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tutoring.Project.board.entity.Board;
-import tutoring.Project.board.entity.BoardDTO;
+import tutoring.Project.board.entity.BoardDto;
 import tutoring.Project.board.repository.BoardRepository;
 import tutoring.Project.member.entity.Member;
 
@@ -36,7 +36,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Board update(Long boardId, Member member, BoardDTO boardDTO) {
+    public Board update(Long boardId, Member member, BoardDto boardDTO) {
 
         Board board = this.findOne(boardId);
         board.setMember(member);

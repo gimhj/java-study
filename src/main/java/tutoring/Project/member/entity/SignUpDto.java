@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SignUpDTO {
+public class SignUpDto {
 
     @NotEmpty(message = "필수 입력 값 입니다.")
     private String name;
