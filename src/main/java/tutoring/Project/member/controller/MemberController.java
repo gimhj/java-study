@@ -2,11 +2,13 @@ package tutoring.Project.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tutoring.Project.member.entity.Address;
 import tutoring.Project.member.entity.Member;
 import tutoring.Project.member.entity.MemberGrade;
+import tutoring.Project.member.entity.MemberResponseDto;
 import tutoring.Project.member.entity.SignInDTO;
 import tutoring.Project.member.entity.SignUpDTO;
 import tutoring.Project.member.service.MemberService;
@@ -35,17 +38,23 @@ public class MemberController {
 
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @GetMapping("")
     @Operation(summary = "전체조회")
-    public List<Member> index() {
+    public List<MemberResponseDto> index() {
+        List<Member> members = memberService.findAll();
 
-        return memberService.findAll();
+        List<MemberResponseDto> result = members.stream()
+            .map(member -> modelMapper.map(member, MemberResponseDto.class))
+            .collect(Collectors.toList());
+
+        return result;
     }
 
     @PostMapping("")
     @Operation(summary = "회원가입")
-    public Member store(@Valid @RequestBody SignUpDTO signUpDTO) {
+    public MemberResponseDto store(@Valid @RequestBody SignUpDTO signUpDTO) {
 
         Address address = new Address(signUpDTO.getCity(), signUpDTO.getStreet(),
             signUpDTO.getZipcode()
@@ -65,14 +74,15 @@ public class MemberController {
 
         memberService.signUp(member);
 
-        return member;
+        return modelMapper.map(member, MemberResponseDto.class);
     }
 
     @GetMapping("/{memberId}")
     @Operation(summary = "회원 단일 조회")
-    public Member show(@PathVariable("memberId") Long memberId) {
+    public MemberResponseDto show(@PathVariable("memberId") Long memberId) {
+        Member member = memberService.findOne(memberId);
 
-        return memberService.findOne(memberId);
+        return modelMapper.map(member, MemberResponseDto.class);
     }
 
     @PutMapping("/{memberId}/destroy")

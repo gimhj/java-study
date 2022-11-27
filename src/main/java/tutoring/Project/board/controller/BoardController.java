@@ -2,9 +2,11 @@ package tutoring.Project.board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tutoring.Project.board.entity.Board;
 import tutoring.Project.board.entity.BoardDTO;
+import tutoring.Project.board.entity.BoardResponseDto;
 import tutoring.Project.board.service.BoardService;
 import tutoring.Project.member.entity.Member;
 
@@ -26,18 +29,23 @@ import tutoring.Project.member.entity.Member;
 public class BoardController {
 
     private final BoardService boardService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("")
     @Operation(summary = "전체조회")
-    public List<Board> index() {
+    public List<BoardResponseDto> index() {
+        List<Board> boards = boardService.findAll();
 
-        return boardService.findAll();
+        List<BoardResponseDto> result = boards.stream()
+            .map(board -> modelMapper.map(board, BoardResponseDto.class))
+            .collect(Collectors.toList());
+
+        return result;
     }
-
 
     @PostMapping("")
     @Operation(summary = "게시글 생성")
-    public Board store(@Valid @RequestBody BoardDTO boardDTO) {
+    public BoardResponseDto store(@Valid @RequestBody BoardDTO boardDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
 
@@ -51,12 +59,12 @@ public class BoardController {
 
         boardService.save(board);
 
-        return board;
+        return modelMapper.map(board, BoardResponseDto.class);
     }
 
     @PutMapping("/{boardId}")
     @Operation(summary = "게시글 수정")
-    public Board update(
+    public BoardResponseDto update(
         @PathVariable("boardId") Long boardId,
         @Valid @RequestBody BoardDTO boardDTO
     ) {
@@ -65,7 +73,7 @@ public class BoardController {
 
         Board board = boardService.update(boardId, member, boardDTO);
 
-        return board;
+        return modelMapper.map(board, BoardResponseDto.class);
     }
 
     @PutMapping("/{boardId}/destroy")

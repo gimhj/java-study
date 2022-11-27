@@ -1,7 +1,6 @@
 package tutoring.Project.auth.provider;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,7 +15,6 @@ import tutoring.Project.auth.exeption.DeletedMemberException;
 import tutoring.Project.auth.exeption.ExpiredMemberException;
 import tutoring.Project.auth.service.MemberContext;
 import tutoring.Project.auth.token.AuthenticationToken;
-import tutoring.Project.board.entity.Board;
 
 @Component
 @RequiredArgsConstructor
@@ -35,10 +33,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         MemberContext memberContext = (MemberContext) userDetailsService.loadUserByUsername(email);
-        List<Board> boards = memberContext.getMember().getBoards();
-        for (Board board : boards) {
-            log.info(board.toString());
-        }
 
         if (!passwordEncoder.matches(password, memberContext.getMember().getPassword())) {
             throw new BadCredentialsException("인증 정보가 올바르지 않습니다.");
