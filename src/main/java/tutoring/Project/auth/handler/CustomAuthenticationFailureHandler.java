@@ -22,8 +22,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     private final ObjectMapper objectMapper;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-        AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        AuthenticationException exception
+    ) throws IOException, ServletException {
 
         String errMsg = "유효하지 않은 이메일 또는 비밀번호 입니다.";
 

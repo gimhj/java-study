@@ -23,13 +23,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import tutoring.Project.board.entity.Board;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE member SET deleted_at = CURRENT_TIME WHERE id=?")
 @Where(clause = "deleted_at IS NULL")
 public class Member {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "member_id")
     private Long id;
 

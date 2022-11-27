@@ -1,6 +1,6 @@
 package tutoring.Project.member.exception;
 
-public class AlreadyExistMemberException extends RuntimeException{
+public class AlreadyExistMemberException extends RuntimeException {
 
     public AlreadyExistMemberException() {
         super();
@@ -18,8 +18,10 @@ public class AlreadyExistMemberException extends RuntimeException{
         super(cause);
     }
 
-    protected AlreadyExistMemberException(String message, Throwable cause,
-        boolean enableSuppression, boolean writableStackTrace) {
+    protected AlreadyExistMemberException(
+        String message, Throwable cause,
+        boolean enableSuppression, boolean writableStackTrace
+    ) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

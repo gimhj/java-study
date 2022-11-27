@@ -56,7 +56,10 @@ public class BoardController {
 
     @PutMapping("/{boardId}")
     @Operation(summary = "게시글 수정")
-    public Board update(@PathVariable("boardId") Long boardId, @Valid @RequestBody BoardDTO boardDTO) {
+    public Board update(
+        @PathVariable("boardId") Long boardId,
+        @Valid @RequestBody BoardDTO boardDTO
+    ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
 

@@ -19,11 +19,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import tutoring.Project.member.entity.Member;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "board_id")
     private Long id;
     private String title;

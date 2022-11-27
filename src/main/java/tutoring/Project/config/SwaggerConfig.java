@@ -11,6 +11,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
+
     private static final String API_NAME = "Spring Study API";
     private static final String API_VERSION = "0.1";
     private static final String API_DESCRIPTION = "Daisy API Document";

@@ -1,6 +1,6 @@
 package tutoring.Project.auth.exeption;
 
-public class DeletedMemberException extends RuntimeException{
+public class DeletedMemberException extends RuntimeException {
 
     public DeletedMemberException() {
         super();
@@ -18,8 +18,10 @@ public class DeletedMemberException extends RuntimeException{
         super(cause);
     }
 
-    protected DeletedMemberException(String message, Throwable cause, boolean enableSuppression,
-        boolean writableStackTrace) {
+    protected DeletedMemberException(
+        String message, Throwable cause, boolean enableSuppression,
+        boolean writableStackTrace
+    ) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

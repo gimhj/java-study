@@ -23,14 +23,15 @@ public class SingUpProcessingFilter extends AbstractAuthenticationProcessingFilt
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-
     public SingUpProcessingFilter() {
         super(new AntPathRequestMatcher("/api/members/signIn", "POST"));
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request,
-        HttpServletResponse response)
+    public Authentication attemptAuthentication(
+        HttpServletRequest request,
+        HttpServletResponse response
+    )
         throws AuthenticationException, IOException, ServletException {
 
         if (!isAjax(request)) {
@@ -42,7 +43,10 @@ public class SingUpProcessingFilter extends AbstractAuthenticationProcessingFilt
         if (StringUtils.isEmpty(member.getEmail()) || StringUtils.isEmpty(member.getPassword())) {
             throw new AuthenticationServiceException("Username or Password not provided");
         }
-        AuthenticationToken token = new AuthenticationToken(member.getEmail(), member.getPassword());
+        AuthenticationToken token = new AuthenticationToken(
+            member.getEmail(),
+            member.getPassword()
+        );
 
         return this.getAuthenticationManager().authenticate(token);
     }

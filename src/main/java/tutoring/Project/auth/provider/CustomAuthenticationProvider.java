@@ -28,7 +28,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     @Transactional
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication)
+        throws AuthenticationException {
 
         String email = authentication.getName();
         String password = (String) authentication.getCredentials();
@@ -56,7 +57,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             new AuthenticationToken(
                 memberContext.getMember(),
                 null,
-                memberContext.getAuthorities());
+                memberContext.getAuthorities()
+            );
 
         return authenticationToken;
     }

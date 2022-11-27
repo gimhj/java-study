@@ -1,6 +1,6 @@
 package tutoring.Project.auth.exeption;
 
-public class ExpiredMemberException extends RuntimeException{
+public class ExpiredMemberException extends RuntimeException {
 
     public ExpiredMemberException() {
         super();
@@ -18,8 +18,10 @@ public class ExpiredMemberException extends RuntimeException{
         super(cause);
     }
 
-    protected ExpiredMemberException(String message, Throwable cause, boolean enableSuppression,
-        boolean writableStackTrace) {
+    protected ExpiredMemberException(
+        String message, Throwable cause, boolean enableSuppression,
+        boolean writableStackTrace
+    ) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

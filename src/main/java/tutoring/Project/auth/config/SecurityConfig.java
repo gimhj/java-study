@@ -26,7 +26,7 @@ import tutoring.Project.auth.provider.CustomAuthenticationProvider;
 @RequiredArgsConstructor
 @Slf4j
 public class SecurityConfig {
-    private final UserDetailsService userDetailsService;
+
     private final CustomAuthenticationSuccessHandler authenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler authenticationFailureHandler;
     private final CustomAuthenticationProvider authProvider;
@@ -51,7 +51,8 @@ public class SecurityConfig {
         SingUpProcessingFilter singUpProcessingFilter = new SingUpProcessingFilter();
         singUpProcessingFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
         singUpProcessingFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-        singUpProcessingFilter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
+        singUpProcessingFilter.setAuthenticationManager(authenticationManager(
+            authenticationConfiguration));
 
         http
             .csrf().disable()

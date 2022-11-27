@@ -48,7 +48,8 @@ public class MemberController {
     public Member store(@Valid @RequestBody SignUpDTO signUpDTO) {
 
         Address address = new Address(signUpDTO.getCity(), signUpDTO.getStreet(),
-            signUpDTO.getZipcode());
+            signUpDTO.getZipcode()
+        );
         String password = passwordEncoder.encode(signUpDTO.getPassword());
 
         Member member = new Member();
