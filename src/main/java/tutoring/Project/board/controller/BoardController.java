@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +65,7 @@ public class BoardController {
 
     @PutMapping("/{boardId}")
     @Operation(summary = "게시글 수정")
+    @PreAuthorize("hasPermission(#boardId, 'tutoring.Project.board.entity.Board', 'update')")
     public BoardResponseDto update(
         @PathVariable("boardId") Long boardId,
         @Valid @RequestBody BoardDto boardDTO

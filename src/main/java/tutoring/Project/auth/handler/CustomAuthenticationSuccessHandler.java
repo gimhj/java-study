@@ -33,6 +33,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        objectMapper.writeValue(response.getWriter(), member);
+        objectMapper.writeValue(response.getWriter(), member.getId());
     }
 }
