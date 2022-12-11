@@ -34,6 +34,7 @@ public class BoardController {
 
     @GetMapping("")
     @Operation(summary = "전체조회")
+    @PreAuthorize("isAuthenticated()")
     public List<BoardResponseDto> index() {
         List<Board> boards = boardService.findAll();
 
@@ -46,6 +47,7 @@ public class BoardController {
 
     @PostMapping("")
     @Operation(summary = "게시글 생성")
+    @PreAuthorize("isAuthenticated()")
     public BoardResponseDto store(@Valid @RequestBody BoardDto boardDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
@@ -65,7 +67,7 @@ public class BoardController {
 
     @PutMapping("/{boardId}")
     @Operation(summary = "게시글 수정")
-    @PreAuthorize("hasPermission(#boardId, 'tutoring.Project.board.entity.Board', 'update')")
+    @PreAuthorize("isAuthenticated() and hasPermission(#boardId, 'tutoring.Project.board.entity.Board', 'update')")
     public BoardResponseDto update(
         @PathVariable("boardId") Long boardId,
         @Valid @RequestBody BoardDto boardDTO

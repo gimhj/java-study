@@ -1,8 +1,8 @@
 package tutoring.Project.permission.policy.board;
 
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import tutoring.Project.board.entity.Board;
 import tutoring.Project.board.service.BoardService;
@@ -22,10 +22,9 @@ public class BoardPolicy implements Policy {
         return Board.class;
     }
 
-    public boolean update(Authentication authentication, Long boardId) {
-        Member member = (Member) authentication.getPrincipal();
+    public boolean update(Member member, Long boardId) {
         Board board = boardService.findOne(boardId);
 
-        return board.getMember().getId().equals(member.getId());
+        return Objects.equals(board.getMember().getId(), member.getId());
     }
 }

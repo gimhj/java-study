@@ -1,6 +1,6 @@
 package tutoring.Project.board.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +23,7 @@ import tutoring.Project.member.entity.Member;
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Board {
 
     @Id
@@ -44,7 +45,6 @@ public class Board {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

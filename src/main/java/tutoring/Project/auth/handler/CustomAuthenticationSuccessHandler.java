@@ -2,6 +2,7 @@ package tutoring.Project.auth.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.Base64;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        objectMapper.writeValue(response.getWriter(), member.getId());
+        objectMapper.writeValue(
+            response.getWriter(),
+            Base64.getEncoder()
+                .encodeToString(member.getEmail().getBytes())
+        );
     }
 }

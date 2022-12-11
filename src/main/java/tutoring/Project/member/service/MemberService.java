@@ -3,6 +3,7 @@ package tutoring.Project.member.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class MemberService {
 
     private void validateDuplicateMember(Member member) {
 
-        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
+        Optional<Member> findMember = findByEmail(member.getEmail());
 
         if (!findMember.isEmpty()) {
             throw new AlreadyExistMemberException("이미 존재하는 회원입니다.");
@@ -44,6 +45,10 @@ public class MemberService {
     public List<Member> findAll() {
 
         return memberRepository.findAll();
+    }
+
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
     }
 
     @Transactional

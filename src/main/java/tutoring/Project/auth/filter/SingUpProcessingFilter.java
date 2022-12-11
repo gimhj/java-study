@@ -39,7 +39,6 @@ public class SingUpProcessingFilter extends AbstractAuthenticationProcessingFilt
         }
 
         Member member = objectMapper.readValue(request.getReader(), Member.class);
-
         if (StringUtils.isEmpty(member.getEmail()) || StringUtils.isEmpty(member.getPassword())) {
             throw new AuthenticationServiceException("Username or Password not provided");
         }
@@ -52,7 +51,6 @@ public class SingUpProcessingFilter extends AbstractAuthenticationProcessingFilt
     }
 
     private boolean isAjax(HttpServletRequest request) {
-
         if (XML_HTTP_REQUEST.equals(request.getHeader(X_REQUESTED_WITH))) {
             return true;
         }

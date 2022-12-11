@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
+import tutoring.Project.member.entity.Member;
 import tutoring.Project.permission.policy.Policy;
 
 @RequiredArgsConstructor
@@ -43,10 +44,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         try {
             Class<?> targetClass = Class.forName(targetType);
             Long convertTargetId = (Long) targetId;
-            System.out.println(targetClass);
+            String methodName = permission.toString();
 
             Policy policy = policies.get(targetClass);
-            System.out.println(policy);
 
             if (policy == null) {
 
@@ -54,20 +54,23 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             }
 
             try {
-                log.info("test");
+                System.out.println(authentication);
+                System.out.println(authentication.getPrincipal());
+                System.out.println(authentication.getPrincipal().getClass());
+                System.out.println(authentication.getPrincipal() instanceof Member);
+                System.out.println(authentication.getPrincipal() instanceof Authentication);
+                System.out.println(authentication instanceof Authentication);
 
-                Method method = policy.getClass().getDeclaredMethod(
-                    permission.toString(),
-                    Authentication.class,
+                Method method = policy.getClass().getMethod(
+                    methodName,
+                    authentication.getPrincipal().getClass(),
                     Long.class
                 );
 
-                System.out.println(method);
-
                 // TODO: 2022/12/03 fix error(object is not an instance of declaring class)
                 return (Boolean) method.invoke(
-                    permission.toString(),
-                    authentication,
+                    methodName,
+                    authentication.getPrincipal(),
                     convertTargetId
                 );
             } catch (NoSuchMethodException e) {
