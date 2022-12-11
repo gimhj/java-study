@@ -7,6 +7,9 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,8 +38,8 @@ public class BoardController {
     @GetMapping("")
     @Operation(summary = "전체조회")
     @PreAuthorize("isAuthenticated()")
-    public List<BoardResponseDto> index() {
-        List<Board> boards = boardService.findAll();
+    public List<BoardResponseDto> index(@PageableDefault(size = 30) Pageable pageable) {
+        Page<Board> boards = boardService.findAll(pageable);
 
         List<BoardResponseDto> result = boards.stream()
             .map(board -> modelMapper.map(board, BoardResponseDto.class))
