@@ -20,6 +20,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -60,6 +61,7 @@ public class Board {
     private Member member;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    @Where(clause = "parent_id IS NULL")
     @OrderBy("createdAt desc")
     private List<Comment> comments;
 }

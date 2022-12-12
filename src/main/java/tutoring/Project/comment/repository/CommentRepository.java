@@ -1,6 +1,7 @@
 package tutoring.Project.comment.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import tutoring.Project.comment.entity.Comment;
 
@@ -11,4 +12,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Override
     List<Comment> findAll();
+
+    @Override
+    Optional<Comment> findById(Long commentId);
 }

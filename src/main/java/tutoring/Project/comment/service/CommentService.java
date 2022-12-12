@@ -1,6 +1,7 @@
 package tutoring.Project.comment.service;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,26 @@ public class CommentService {
         comment.setIsLock(commentRequestDto.getIsLock());
 
         return commentRepository.save(comment);
+    }
+
+    public Optional<Comment> findById(Long commentId) {
+
+        return commentRepository.findById(commentId);
+    }
+
+    public Comment addReplyComment(
+        Member member,
+        Board board,
+        Comment comment,
+        CommentRequestDto commentRequestDto
+    ) {
+        Comment replyComment = new Comment();
+        replyComment.setBoard(board);
+        replyComment.setMember(member);
+        replyComment.setParentComment(comment);
+        replyComment.setContent(commentRequestDto.getContent());
+        replyComment.setIsLock(commentRequestDto.getIsLock());
+
+        return commentRepository.save(replyComment);
     }
 }
