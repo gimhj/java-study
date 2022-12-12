@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,5 +60,6 @@ public class Board {
     private Member member;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    @OrderBy("createdAt desc")
     private List<Comment> comments;
 }

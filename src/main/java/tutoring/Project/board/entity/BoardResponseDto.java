@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import tutoring.Project.comment.entity.Comment;
+import tutoring.Project.comment.dto.CommentResponseDto;
 import tutoring.Project.member.entity.MemberResponseDto;
 
 @Getter
@@ -24,5 +24,5 @@ public class BoardResponseDto {
     private LocalDateTime deletedAt;
 
     private MemberResponseDto member;
-    private List<Comment> comments;
+    private List<CommentResponseDto> comments;
 }
