@@ -45,10 +45,11 @@ public class BoardLikeController {
 
     @PutMapping("{boardLikeId}")
     @Transactional
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(
+        "isAuthenticated() and "
+            + "hasPermission(#boardLikeId, 'tutoring.Project.boardLike.entity.BoardLike', 'update')"
+    )
     public ResponseEntity update(@PathVariable("boardLikeId") Long boardLikeId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
         Optional<BoardLike> boardLike = boardLikeService.findById(boardLikeId);
 
         if (boardLike.isEmpty()) {
