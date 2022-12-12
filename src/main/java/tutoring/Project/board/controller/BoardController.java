@@ -68,6 +68,15 @@ public class BoardController {
         return modelMapper.map(board, BoardResponseDto.class);
     }
 
+    @GetMapping("/{boardId}")
+    @Operation(summary = "게시글 상세")
+    @PreAuthorize("isAuthenticated()")
+    public BoardResponseDto show(@PathVariable("boardId") Long boardId) {
+        Board board = boardService.findOne(boardId);
+
+        return modelMapper.map(board, BoardResponseDto.class);
+    }
+
     @PutMapping("/{boardId}")
     @Operation(summary = "게시글 수정")
     @PreAuthorize("isAuthenticated() and hasPermission(#boardId, 'tutoring.Project.board.entity.Board', 'update')")

@@ -1,10 +1,11 @@
 package tutoring.Project.board.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import tutoring.Project.member.entity.Member;
+import tutoring.Project.comment.entity.Comment;
+import tutoring.Project.member.entity.MemberResponseDto;
 
 @Getter
 @Setter
@@ -22,6 +23,6 @@ public class BoardResponseDto {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
-    @JsonIgnore
-    private Member member;
+    private MemberResponseDto member;
+    private List<Comment> comments;
 }
