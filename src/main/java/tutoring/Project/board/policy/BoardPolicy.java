@@ -1,4 +1,4 @@
-package tutoring.Project.permission.policy.board;
+package tutoring.Project.board.policy;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package tutoring.Project.permission.policy.boardLike;
+package tutoring.Project.BoardLike.policy;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import tutoring.Project.BoardLike.entity.BoardLike;
 import tutoring.Project.BoardLike.service.BoardLikeService;
-import tutoring.Project.board.entity.Board;
 import tutoring.Project.member.entity.Member;
 import tutoring.Project.permission.policy.Policy;
 
@@ -21,7 +20,7 @@ public class BoardLikePolicy implements Policy {
     @Override
     public Class<?> getTargetClass() {
 
-        return Board.class;
+        return BoardLike.class;
     }
 
     public boolean update(Member member, Long boardId) {
