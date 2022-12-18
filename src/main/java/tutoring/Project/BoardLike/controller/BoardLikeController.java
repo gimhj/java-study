@@ -36,9 +36,9 @@ public class BoardLikeController {
     public ResponseEntity store(@RequestParam Long boardId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
-        Board board = boardService.findOne(boardId);
+        Optional<Board> board = boardService.findById(boardId);
 
-        boardLikeService.addBoardLike(member, board);
+        boardLikeService.addBoardLike(member, board.get());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

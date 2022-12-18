@@ -1,6 +1,7 @@
 package tutoring.Project.board.policy;
 
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,12 @@ public class BoardPolicy implements Policy {
     }
 
     public boolean update(Member member, Long boardId) {
-        Board board = boardService.findOne(boardId);
+        Optional<Board> board = boardService.findById(boardId);
 
-        return Objects.equals(board.getMember().getId(), member.getId());
+        if (board.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        return Objects.equals(board.get().getMember().getId(), member.getId());
     }
 }

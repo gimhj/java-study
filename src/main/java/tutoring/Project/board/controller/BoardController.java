@@ -2,6 +2,7 @@ package tutoring.Project.board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -72,9 +73,9 @@ public class BoardController {
     @Operation(summary = "게시글 상세")
     @PreAuthorize("isAuthenticated()")
     public BoardResponseDto show(@PathVariable("boardId") Long boardId) {
-        Board board = boardService.findOne(boardId);
+        Optional<Board> board = boardService.findById(boardId);
 
-        return modelMapper.map(board, BoardResponseDto.class);
+        return modelMapper.map(board.get(), BoardResponseDto.class);
     }
 
     @PutMapping("/{boardId}")
@@ -87,7 +88,7 @@ public class BoardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
 
-        Board board = boardService.update(boardId, member, boardDTO);
+        Optional<Board> board = boardService.update(boardId, member, boardDTO);
 
         return modelMapper.map(board, BoardResponseDto.class);
     }

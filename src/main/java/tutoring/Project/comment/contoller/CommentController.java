@@ -47,9 +47,13 @@ public class CommentController {
     public CommentResponseDto store(@Valid CommentRequestDto commentRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
-        Board board = boardService.findOne(commentRequestDto.getBoardId());
+        Optional<Board> board = boardService.findById(commentRequestDto.getBoardId());
 
-        Comment comment = commentService.save(member, board, commentRequestDto);
+        if (board.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        Comment comment = commentService.save(member, board.get(), commentRequestDto);
 
         return modelMapper.map(comment, CommentResponseDto.class);
     }
@@ -63,8 +67,12 @@ public class CommentController {
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
-        Board board = boardService.findOne(commentRequestDto.getBoardId());
+        Optional<Board> board = boardService.findById(commentRequestDto.getBoardId());
         Optional<Comment> comment = commentService.findById(commentId);
+
+        if (board.isEmpty()) {
+            throw new IllegalStateException();
+        }
 
         if (comment.isEmpty()) {
             throw new IllegalStateException("회신할 댓글이 존재하지 않습니다.");
@@ -72,7 +80,7 @@ public class CommentController {
 
         Comment replyComment = commentService.addReplyComment(
             member,
-            board,
+            board.get(),
             comment.get(),
             commentRequestDto
         );
