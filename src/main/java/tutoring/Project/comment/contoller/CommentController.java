@@ -36,9 +36,9 @@ public class CommentController {
     @GetMapping("")
     @Transactional(readOnly = true)
     @PreAuthorize("isAuthenticated()")
-    public List<Comment> index() {
+    public List<Comment> index(Long boardId) {
 
-        return commentService.findAll();
+        return commentService.findAll(boardId);
     }
 
     @PostMapping("")
@@ -53,7 +53,13 @@ public class CommentController {
             throw new IllegalStateException();
         }
 
-        Comment comment = commentService.save(member, board.get(), commentRequestDto);
+        Comment comment = modelMapper.map(commentRequestDto, Comment.class);
+        Long parentId = commentRequestDto.getParentId();
+        Optional<Comment> parent = parentId != null ? commentService.findById(parentId) : null;
+        Comment created = parent != null ? commentService.create(member, comment, parent.get())
+            : commentService.create(member, comment);
+
+//        Comment comment = commentService.save(member, board.get(), commentRequestDto);
 
         return modelMapper.map(comment, CommentResponseDto.class);
     }

@@ -2,7 +2,6 @@ package tutoring.Project.comment.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -11,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,10 +57,20 @@ public class Comment {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    private Comment parentComment;
+//    @ManyToOne
+//    @JoinColumn(name = "parent_id")
+//    private Comment parentComment;
+//
+//    @OneToMany(mappedBy = "parentComment")
+//    private List<Comment> replyComments;
 
-    @OneToMany(mappedBy = "parentComment")
-    private List<Comment> replyComments;
+    private Long head;
+
+    private String reply;
+
+    @PrePersist
+    public void prePersist() {
+        this.head = this.head == null ? 0 : this.head;
+        this.reply = this.reply == null ? "" : this.reply;
+    }
 }
